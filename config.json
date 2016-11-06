@@ -1,0 +1,11 @@
+{
+	"logs": {
+		"types": ["debug", "info", "warn", "error"],
+		"files": {
+			"{AppPath}/info.log": ["debug", "info", "warn"],
+			"{AppPath}/error.log": ["error"],
+			"STDOUT": ["debug", "info", "warn"],
+			"STDERR": ["error"]
+		} 
+	}
+}
