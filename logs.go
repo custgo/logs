@@ -1,12 +1,14 @@
 package logs
 
-var defaultLogger = NewLogger(&LogsConfig{
+var originalDefaultLogger = NewLogger(&LogsConfig{
 	Types: []string{"info", "warn", "error"},
 	Files: map[string][]string{
 		"STDOUT": []string{"info", "warn"},
 		"STDERR": []string{"error"},
 	},
 })
+
+var defaultLogger = originalDefaultLogger
 
 func SetDefaultLogger(conf *LogsConfig) {
 	defaultLogger = NewLogger(conf)

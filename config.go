@@ -23,6 +23,8 @@ type LogsConfig struct {
 	Files map[string][]string `json:files`
 }
 
+// 返回 LogsConfig 中配置的日志类型
+// 例如设置了 ERROR + INFO，则返回 10 （ERROR | INFO）
 func (conf *LogsConfig) getTypes() int {
 	lg := 0
 	if 0 == len(conf.Types) {
@@ -34,6 +36,8 @@ func (conf *LogsConfig) getTypes() int {
 	return lg
 }
 
+// 解析 LogsConfig 的 files，生成与日志类型关联的 io.Writer
+// 例如 {ERROR: [os.Stderr, os.Stdout]}
 func (conf *LogsConfig) getWriters() map[int][]io.Writer {
 	ret := make(map[int][]io.Writer)
 	for fileName, types := range conf.Files {

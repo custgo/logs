@@ -86,7 +86,7 @@ func (l *Logger) Write(itype int, message string) {
 
 func (l *Logger) WriteTypes(types int, message string) {
 	for i := 1; i <= ALL; i <<= 1 {
-		if i&types > 0 {
+		if i&types == i {
 			l.Write(i, message)
 		}
 	}
