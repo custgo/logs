@@ -11,7 +11,7 @@ func TestDefault(t *testing.T) {
 	Warn("Warning: ", "our base is under attack!")
 	Error("Error: ", "div by zero")
 
-	SetTypes(ALL)
+	SetTypes(TYPE_ALL)
 	SetPrefix("debug", "[TESTING]")
 	SetTimeFormat("20060102150405")
 	SetWriter("debug", os.Stdout)

@@ -10,12 +10,12 @@ import (
 )
 
 const (
-	NOLOG = 0
-	DEBUG = 1
-	INFO  = 2
-	WARN  = 4
-	ERROR = 8
-	ALL   = 15
+	TYPE_NOLOG = 0
+	TYPE_DEBUG = 1
+	TYPE_INFO  = 2
+	TYPE_WARN  = 4
+	TYPE_ERROR = 8
+	TYPE_ALL   = 15
 )
 
 type LogsConfig struct {
@@ -80,15 +80,15 @@ func getWriterByName(name string) io.Writer {
 func getTypeByName(name string) int {
 	switch strings.ToLower(strings.TrimSpace(name)) {
 	case "debug":
-		return DEBUG
+		return TYPE_DEBUG
 	case "info":
-		return INFO
+		return TYPE_INFO
 	case "warn":
-		return WARN
+		return TYPE_WARN
 	case "error":
-		return ERROR
+		return TYPE_ERROR
 	}
-	return NOLOG
+	return TYPE_NOLOG
 }
 
 var execPath string

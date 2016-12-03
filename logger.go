@@ -28,10 +28,10 @@ func NewLogger(conf *LogsConfig) *Logger {
 		writers: conf.getWriters(),
 		timeFmt: "2006-01-02 15:04:05",
 		prefixes: map[int]string{
-			DEBUG: "[Debug]",
-			INFO:  "[Info]",
-			WARN:  "[Warn]",
-			ERROR: "[Error]",
+			TYPE_DEBUG: "[Debug]",
+			TYPE_INFO:  "[Info]",
+			TYPE_WARN:  "[Warn]",
+			TYPE_ERROR: "[Error]",
 		},
 	}
 }
@@ -46,7 +46,7 @@ func (l *Logger) SetPrefix(typeName string, prefix string) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	itype := getTypeByName(typeName)
-	if itype > NOLOG {
+	if itype > TYPE_NOLOG {
 		l.prefixes[itype] = prefix
 	}
 }
@@ -61,7 +61,7 @@ func (l *Logger) SetWriter(typeName string, writer io.Writer) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	itype := getTypeByName(typeName)
-	if itype <= NOLOG {
+	if itype <= TYPE_NOLOG {
 		return
 	}
 	writers, exists := l.writers[itype]
@@ -115,7 +115,7 @@ func (l *Logger) Write(itype int, message string) {
 }
 
 func (l *Logger) WriteTypes(types int, message string) {
-	for i := 1; i <= ALL; i <<= 1 {
+	for i := 1; i <= TYPE_ALL; i <<= 1 {
 		if i&types == i {
 			l.Write(i, message)
 		}
@@ -143,19 +143,19 @@ func (l *Logger) WriteTypesArgs(types int, message string, args ...interface{}) 
 }
 
 func (l *Logger) Debug(message string, args ...interface{}) {
-	l.WriteArgs(DEBUG, message, args...)
+	l.WriteArgs(TYPE_DEBUG, message, args...)
 }
 
 func (l *Logger) Info(message string, args ...interface{}) {
-	l.WriteArgs(INFO, message, args...)
+	l.WriteArgs(TYPE_INFO, message, args...)
 }
 
 func (l *Logger) Warn(message string, args ...interface{}) {
-	l.WriteArgs(WARN, message, args...)
+	l.WriteArgs(TYPE_WARN, message, args...)
 }
 
 func (l *Logger) Error(message string, args ...interface{}) {
-	l.WriteArgs(ERROR, message, args...)
+	l.WriteArgs(TYPE_ERROR, message, args...)
 }
 
 func (l *Logger) Fatal(message string, args ...interface{}) {
