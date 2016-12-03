@@ -57,7 +57,7 @@ var writers_map = make(map[string]io.Writer)
 
 func getWriterByName(name string) io.Writer {
 	if strings.HasPrefix(name, "{AppPath}") {
-		name = getExecPath() + name[9:]
+		name = GetExecPath() + name[9:]
 	}
 	writer, exists := writers_map[name]
 	if exists {
@@ -93,7 +93,7 @@ func getTypeByName(name string) int {
 
 var execPath string
 
-func getExecPath() string {
+func GetExecPath() string {
 	if "" == execPath {
 		execFile, _ := exec.LookPath(os.Args[0])
 		execPath = filepath.Dir(execFile)
