@@ -18,7 +18,11 @@ func Restore() {
 	defaultLogger = originalDefaultLogger
 }
 
-func SetDefaultLogger(conf *LogsConfig) {
+func SetDefaultLogger(logger *Logger) {
+	defaultLogger = logger
+}
+
+func SetDefaultLoggerForConfig(conf *LogsConfig) {
 	defaultLogger = NewLogger(conf)
 }
 
