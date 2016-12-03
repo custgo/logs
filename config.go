@@ -53,20 +53,27 @@ func (conf *LogsConfig) getWriters() map[int][]io.Writer {
 	return ret
 }
 
+var writers_map = make(map[string]io.Writer)
+
 func getWriterByName(name string) io.Writer {
+	if strings.HasPrefix(name, "{AppPath}") {
+		name = getExecPath() + name[9:]
+	}
+	writer, exists := writers_map[name]
+	if exists {
+		return writer
+	}
 	if "STDOUT" == strings.ToUpper(name) {
 		return os.Stdout
 	}
 	if "STDERR" == strings.ToUpper(name) {
 		return os.Stderr
 	}
-	if strings.HasPrefix(name, "{AppPath}") {
-		name = getExecPath() + name[9:]
-	}
 	logf, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if nil != err {
 		log.Fatal("Error! Can not Open Log File:", err)
 	}
+	writers_map[name] = logf
 	return logf
 }
 

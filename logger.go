@@ -51,6 +51,36 @@ func (l *Logger) SetPrefix(typeName string, prefix string) {
 	}
 }
 
+func (l *Logger) SetTypes(types int) {
+	l.mu.Lock()
+	l.types = types
+	l.mu.Unlock()
+}
+
+func (l *Logger) SetWriter(typeName string, writer io.Writer) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	itype := getTypeByName(typeName)
+	if itype <= NOLOG {
+		return
+	}
+	writers, exists := l.writers[itype]
+	if !exists {
+		writers = make([]io.Writer, 0)
+		l.writers[itype] = append(writers, writer)
+		return
+	}
+	for _, w := range writers {
+		if w == writer {
+			exists = true
+			break
+		}
+	}
+	if !exists {
+		l.writers[itype] = append(writers, writer)
+	}
+}
+
 func (l *Logger) Write(itype int, message string) {
 	l.mu.Lock()
 	defer l.mu.Unlock()

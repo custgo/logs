@@ -1,5 +1,9 @@
 package logs
 
+import (
+	"io"
+)
+
 var originalDefaultLogger = NewLogger(&LogsConfig{
 	Types: []string{"info", "warn", "error"},
 	Files: map[string][]string{
@@ -9,6 +13,10 @@ var originalDefaultLogger = NewLogger(&LogsConfig{
 })
 
 var defaultLogger = originalDefaultLogger
+
+func Restore() {
+	defaultLogger = originalDefaultLogger
+}
 
 func SetDefaultLogger(conf *LogsConfig) {
 	defaultLogger = NewLogger(conf)
@@ -22,6 +30,14 @@ func SetPrefix(typeName string, prefix string) {
 	defaultLogger.SetPrefix(typeName, prefix)
 }
 
+func SetTypes(types int) {
+	defaultLogger.SetTypes(types)
+}
+
+func SetWriter(typeName string, writer io.Writer) {
+	defaultLogger.SetWriter(typeName, writer)
+}
+
 func Debug(message string, args ...interface{}) {
 	defaultLogger.Debug(message, args...)
 }
@@ -31,7 +47,7 @@ func Info(message string, args ...interface{}) {
 }
 
 func Warn(message string, args ...interface{}) {
-	defaultLogger.Warn(message, args)
+	defaultLogger.Warn(message, args...)
 }
 
 func Error(message string, args ...interface{}) {
