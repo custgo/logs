@@ -28,7 +28,7 @@ func TestLogfile(t *testing.T) {
 			errorfile: []string{"error"},
 		},
 	}
-	SetDefaultLogger(conf)
+	SetDefaultLoggerForConfig(conf)
 	TestDefault(t)
 	_, ierr := os.Stat(infofile)
 	if os.IsNotExist(ierr) {
@@ -46,4 +46,8 @@ func TestLogfile(t *testing.T) {
 	if err := os.Remove(infofile); err != nil {
 		t.Log("remove ", infofile, " faild: ", err)
 	}
+}
+
+func TestGetExecPath(t *testing.T) {
+	t.Log(GetExecPath())
 }
